@@ -1,5 +1,8 @@
 import requests
 import json
+import urllib.parse as urlencode
+
+w_key = "NHGIKFM0VW4TGHDA" # L3_T_4a2 write key
 
 def clearChannel():
     try:
@@ -13,6 +16,22 @@ def clearChannel():
     except Exception as e:
         print (e)
 
+def uploadPersonEnterExitRoomData(action, roomId, occupants, time):
+    return uploadData(action, roomId, occupants, time)
 
-if __name__=="__main__":
-    clearChannel()
+def uploadMaxCapChangeData(action, roomId, newMax, time):
+    return uploadData(action, roomId, newMax, time)
+
+def uploadMaxCapReachedData(action, roomId, time):
+    return uploadData(action, roomId, "", time)
+
+
+def uploadData(field1, field2, field3, field4):
+    try:
+        params = {'field1': field1, 'field2':field2, 'field3':field3, 'field4':field3, 'key':w_key}
+        headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
+        url = "http://api.thingspeak.com:80/update"
+        r = requests.post(url, params=params, headers=headers)
+        return r.status_code
+    except Exception as e:
+        print(e)
