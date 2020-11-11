@@ -8,9 +8,8 @@ r_key = "1IF97D5OLYHPX0ER"  # L3_T_4a2 read key
 
 # Wipe all data from thingspeak - to be performed before each test
 def clear_thingspeak():
-
-
-# Clears all past entries from thingspeak
+    # Clears all past entries from thingspeak
+    print("clear")
 
 
 # Test 1 - Simulate a person entering a room
@@ -46,12 +45,44 @@ def max_capacity_reached():
 # Tests one instances of all basic communication messages in the system
 class BasicCommunication:
 
-    # TEST #1
-    # Send a message emulating the max capacity of a room being reached to ThingSpeak
+    # Test 1 - Simulate a person entering a room
     def test_person_entered_room(self):
         # Delete all entries in ThinkSpeak
         clear_thingspeak()
 
         # Run test #1
+        person_entered_room()
+
+    # Test 2 - Simulate a person exiting a room
+    def test_person_exited_room(self):
+        # Delete all entries in ThinkSpeak
+        clear_thingspeak()
+
+        # Run test # 2
+        person_exited_room()
 
 
+    # Test 3 - Simulate the max capacity being increased
+    def test_max_capacity_increased():
+        # Delete all entries in ThinkSpeak
+        clear_thingspeak()
+
+        # Run test # 3
+        max_capacity_increased
+
+
+    # Test 4 - Simulate the max capacity being decreased
+    def test_max_capacity_decreased():
+        # Delete all entries in ThinkSpeak
+        clear_thingspeak()
+
+        # Run test # 4
+        max_capacity_decreased
+
+    # Test 5 - Simulate the max capacity being reached
+    def test_max_capacity_reached():
+        # Delete all entries in ThinkSpeak
+        clear_thingspeak()
+
+        # Run test # 5
+        max_capacity_reached()
