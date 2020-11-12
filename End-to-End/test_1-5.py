@@ -13,16 +13,15 @@ class BasicCommunication(unittest.TestCase):
 
     # Wait 5 seconds before each test, since thingspeak has message limitations
     def setUp(self):
-        time.sleep()
+        time.sleep(5)
 
-    '''
     # Test 1 - Simulate a person entering a room
     def test_person_entered_room(self):
         # Delete all entries in ThinkSpeak
         clearChannel()
 
         # Run test #1
-        person_entered_room()
+        self.assertEqual(200, uploadPersonEntering(1, 2, datetime.datetime.now))
 
     # Test 2 - Simulate a person exiting a room
     def test_person_exited_room(self):
@@ -30,8 +29,7 @@ class BasicCommunication(unittest.TestCase):
         clearChannel()
 
         # Run test # 2
-        person_exited_room()
-    '''
+        self.assertEqual(200, uploadPersonExiting(2, 1, datetime.datetime.now))
 
     # Test 3 - Simulate the max capacity being increased
     def test_max_capacity_increased(self):
@@ -39,16 +37,16 @@ class BasicCommunication(unittest.TestCase):
         clearChannel()
 
         # Run test # 3
-        self.assertEqual(200, uploadPersonEntering(3, 10, datetime.datetime.now))
+        self.assertEqual(200, uploadIncreasedCapacity(3, 10, datetime.datetime.now))
 
-    '''
     # Test 4 - Simulate the max capacity being decreased
     def test_max_capacity_decreased(self):
         # Delete all entries in ThinkSpeak
         clearChannel()
 
         # Run test # 4
-        uploadMaxCapChangeData(action, roomId, newMax, time)
+
+        self.assertEqual(200, uploadDecreasedCapacity(4, 9, datetime.datetime.now))
 
     # Test 5 - Simulate the max capacity being reached
     def test_max_capacity_reached(self):
@@ -56,8 +54,7 @@ class BasicCommunication(unittest.TestCase):
         clearChannel()
 
         # Run test # 5
-        uploadMaxCapReachedData(action, roomId, time)
-    '''
+        uploadMaxCapReachedData(5, datetime.datetime.now)
 
 
 if __name__ == '__main__':
