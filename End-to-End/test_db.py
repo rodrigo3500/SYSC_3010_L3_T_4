@@ -136,7 +136,7 @@ class DatabaseTests(TestCase):
     """
     def test_update_maxOccupancy(self):
         roomID = 1000
-        newMaxOccupancy = 4
+        newMaxOccupancy = 5
         updateMaxOccupancy(roomID, newMaxOccupancy)
         self.assertEqual(getMaxOccupancy(roomID), newMaxOccupancy)
 
