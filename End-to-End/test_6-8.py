@@ -31,14 +31,15 @@ class TestDataRetrival(unittest.TestCase):
         self.assertEqual(200,uploadMaxReached)
 
 
-    # Test #
+    # Test #6
     # Asserting to ensure all uploaded data can be retreived. The setup function uploads 5 data points for testing
-    def test_getAllData(self): 
+    def test_getAllData(self):
         fullURL = URL+r_key
         getData = requests.get(fullURL).json()
         entries = getData['feeds']
         self.assertEqual(5,len(entries))
 
+    # Test #7
     # Testing to ensure that just the last three data points can be retreived
     def test_getSpecificEntries(self):
         HEADER = '&results=3'
