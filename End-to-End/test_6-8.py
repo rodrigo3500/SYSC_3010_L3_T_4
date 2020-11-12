@@ -7,7 +7,7 @@ import time
 
 w_key = "NHGIKFM0VW4TGHDA"  # L3_T_4a2 write key
 r_key = "1IF97D5OLYHPX0ER"  # L3_T_4a2 read key
-URL = 'https://api.thingspeak.com/channels/1224300/feeds.json?api_key='   
+URL = 'https://api.thingspeak.com/channels/1224300/feeds.json?api_key='
 
 # Sends sample data log entries to ThingSpeak.
 class TestDataRetrival(unittest.TestCase):
@@ -15,19 +15,19 @@ class TestDataRetrival(unittest.TestCase):
         # Given that the only the test data is present in the thingspeak channel
         clearResponse= ChannelControls.clearChannel()
         self.assertEqual(200, clearResponse)
-        uploadEnter = ChannelControls.uploadPersonEnterExitRoomData("enter", 1, 2, datetime.datetime.now())
+        uploadEnter = ChannelControls.uploadPersonEntering(1, 2, datetime.datetime.now())
         self.assertEqual(200,uploadEnter)
         time.sleep(5)
-        uploadExit = ChannelControls.uploadPersonEnterExitRoomData("exit", 3, 1, datetime.datetime.now())
+        uploadExit = ChannelControls.uploadPersonExiting(3, 1, datetime.datetime.now())
         self.assertEqual(200,uploadExit)
         time.sleep(5)
-        uploadMaxIncrease = ChannelControls.uploadMaxCapChangeData("max_capacity_increased",1,10, datetime.datetime.now())
+        uploadMaxIncrease = ChannelControls.uploadIncreasedCapacity(1,10, datetime.datetime.now())
         self.assertEqual(200,uploadMaxIncrease)
         time.sleep(5)
-        uploadMaxDecrease = ChannelControls.uploadMaxCapChangeData("max_capacity_decreased",3,9, datetime.datetime.now())
+        uploadMaxDecrease = ChannelControls.uploadDecreasedCapacity(3,9, datetime.datetime.now())
         self.assertEqual(200,uploadMaxDecrease)
         time.sleep(5)
-        uploadMaxReached = ChannelControls.uploadMaxCapReachedData("max_capacity_reached", 3, datetime.datetime.now())
+        uploadMaxReached = ChannelControls.uploadMaxCapReachedData(3, datetime.datetime.now())
         self.assertEqual(200,uploadMaxReached)
 
 
