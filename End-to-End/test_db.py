@@ -110,6 +110,10 @@ def getManagerDetails(managerID):
 
     return details
 
+# Resetting values before running tests
+updateCurrentOccupancy(1000, 0) # Resetting current occupancy to 0
+updateMaxOccupancy(1000, 0) # Resetting max occupancy to 0
+
 """
 Test Cases for:
     updateCurrentOccupancy(roomID, currentSize)
@@ -117,6 +121,7 @@ Test Cases for:
     getManagerDetails(managerID)
 """
 class DatabaseTests(TestCase):
+    
     """
     First updates current occupancy in database then reads and compares against test
     """
