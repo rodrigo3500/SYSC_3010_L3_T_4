@@ -1,5 +1,6 @@
 import unittest
 import datetime
+import time
 
 from ChannelControls import *
 
@@ -9,6 +10,11 @@ r_key = "1IF97D5OLYHPX0ER"  # L3_T_4a2 read key
 
 # Tests one instances of all basic communication messages in the system
 class BasicCommunication(unittest.TestCase):
+
+    # Wait 5 seconds before each test, since thingspeak has message limitations
+    def setUp(self):
+        time.sleep()
+
     '''
     # Test 1 - Simulate a person entering a room
     def test_person_entered_room(self):
@@ -33,8 +39,7 @@ class BasicCommunication(unittest.TestCase):
         clearChannel()
 
         # Run test # 3
-        self.assertEqual(uploadMaxCapChangeData("max_capacity_increased", 3, 10, datetime.datetime.now),200)
-
+        self.assertEqual(200, uploadPersonEntering(3, 10, datetime.datetime.now))
 
     '''
     # Test 4 - Simulate the max capacity being decreased
@@ -53,5 +58,7 @@ class BasicCommunication(unittest.TestCase):
         # Run test # 5
         uploadMaxCapReachedData(action, roomId, time)
     '''
+
+
 if __name__ == '__main__':
     unittest.main()
