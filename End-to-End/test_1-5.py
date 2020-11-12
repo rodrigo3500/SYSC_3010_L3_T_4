@@ -2,14 +2,10 @@ import unittest
 import http.client as httplib
 from urllib.parse import urlencode
 
+from ChannelControls import clearChannel
+
 w_key = "NHGIKFM0VW4TGHDA"  # L3_T_4a2 write key
 r_key = "1IF97D5OLYHPX0ER"  # L3_T_4a2 read key
-
-
-# Wipe all data from thingspeak - to be performed before each test
-def clear_thingspeak():
-    # Clears all past entries from thingspeak
-    print("clear")
 
 
 # Test 1 - Simulate a person entering a room
@@ -48,7 +44,7 @@ class BasicCommunication:
     # Test 1 - Simulate a person entering a room
     def test_person_entered_room(self):
         # Delete all entries in ThinkSpeak
-        clear_thingspeak()
+        clearChannel()
 
         # Run test #1
         person_entered_room()
@@ -56,25 +52,23 @@ class BasicCommunication:
     # Test 2 - Simulate a person exiting a room
     def test_person_exited_room(self):
         # Delete all entries in ThinkSpeak
-        clear_thingspeak()
+        clearChannel()
 
         # Run test # 2
         person_exited_room()
 
-
     # Test 3 - Simulate the max capacity being increased
     def test_max_capacity_increased():
         # Delete all entries in ThinkSpeak
-        clear_thingspeak()
+        clearChannel()
 
         # Run test # 3
         max_capacity_increased
 
-
     # Test 4 - Simulate the max capacity being decreased
     def test_max_capacity_decreased():
         # Delete all entries in ThinkSpeak
-        clear_thingspeak()
+        clearChannel()
 
         # Run test # 4
         max_capacity_decreased
@@ -82,7 +76,7 @@ class BasicCommunication:
     # Test 5 - Simulate the max capacity being reached
     def test_max_capacity_reached():
         # Delete all entries in ThinkSpeak
-        clear_thingspeak()
+        clearChannel()
 
         # Run test # 5
         max_capacity_reached()
