@@ -106,8 +106,6 @@ def getManagerDetails(managerID):
     details["email"] = attributes[3]
     details["phoneNumber"] = attributes[4]
 
-    conn.close()
-
     return details
 
 # Resetting values before running tests
