@@ -15,6 +15,7 @@ def test_LEDs():
         sleep(0.5)
         red.off()
         green.off()
-        
+        sleep(0.5)
+
 if __name__ == "__main__":
     test_LEDs()
