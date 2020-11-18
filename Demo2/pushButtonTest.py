@@ -6,18 +6,7 @@ def setup():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(16,GPIO.IN)
     GPIO.setup(18,GPIO.IN)
-'''
-while True:
-    time.sleep(1)
-    if(GPIO.input(16)==GPIO.HIGH):
-        print("16 HIGH")
-    elif(GPIO.input(16)==GPIO.LOW):
-        print("16 LOW")
-    if(GPIO.input(18)==GPIO.HIGH):
-        print("18 HIGH")
-    elif(GPIO.input(18)==GPIO.LOW):
-        print("18 LOW")
-'''
+
 class TestPushButtons(unittest.TestCase):
     def test_upButtonUnpressed(self):
         print("Please do not touch any of the buttons")
