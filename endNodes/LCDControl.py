@@ -1,40 +1,44 @@
-# intall: sudo pip3 install adafruit-circuitpython-charlcd
-# Tutorial on lcd/library basics can be found at: https://learn.adafruit.com/character-lcds/python-circuitpython
+# install: sudo pip3 install RPLCD
+# tutorial on: https://www.digikey.com/en/maker/blogs/2018/how-to-connect-a-raspberry-pi-to-a-16-x-2-lcd-display
+# Author: Hari
+# controls the 2x16 LCD for information display
+import RPi.GPIO as GPIO
+from RPLCD.gpio import CharLCD
+import time
 
-import board
-import digitalio
-import adafruit_character_lcd.character_lcd as charLcd
+# Columns in the lcd 
+column = 16
 
-# Columns in the LCD
-lcdColumns = 16
+# Rows in the lcd
+row = 2
 
-# Rows in the LCD
-lcdRows = 2
+# lcd object used to modify the LCD screen
+lcd = None
+
+# GPIO pins used to connect to LCD, can be found in the design docs
+rs = 10
+e = 8
+db4 = 12
+db5 = 36
+db6 = 38
+db7 = 40
+
+# Setting up the LCD GPIO pins and display default message at the start
+def setupLCD():
+    global lcd
+    lcd = CharLCD(pin_rs=rs, pin_e=e, pin_rw=None, pins_data=[db4,db5,db6,db7], numbering_mode = GPIO.BOARD,cols=column,rows=row,dotsize=8)
+    writeToLCD(5,0)
 
 '''
 LCD display message format:
     Max Capacity: x
     Current: y
 '''
-messageFormat = "Max Capacity: {capacity}\nCurrent: {current}"
-
-# lcd object used to modify LCD screen
-lcd = None
-
-# Setting up the LCD GPIO pins and display default message at start
-def setUpLCD():
-    lcd_rs = digitalio.DigitalInOut(board.D15)
-    lcd_en = digitalio.DigitalInOut(board.D14)
-    lcd_d7 = digitalio.DigitalInOut(board.D21)
-    lcd_d6 = digitalio.DigitalInOut(board.D20)
-    lcd_d5 = digitalio.DigitalInOut(board.D16)
-    lcd_d4 = digitalio.DigitalInOut(board.D18)
+def writeToLCD(capacity, current):
     global lcd
-    lcd = charLcd.Character_LCD_Mono(lcd_rs,lcd_en,lcd_d4,lcd_d5,lcd_d6,lcd_d7,lcdColumns, lcdRows)
     lcd.clear()
-    lcd.message=messageFormat.format(capacity=5,current=0)
+    lcd.cursor_pos=(0,0)
+    lcd.write_string("Max Capacity: {cap}".format(cap=capacity))
+    lcd.cursor_pos=(1,0)
+    lcd.write_string("Current Occ: {curr}".format(curr=current))
 
-# Update the LCD to display updated room metrics
-def updateLCD(cap, curr):
-    global lcd
-    lcd.message=messageFormat.format(capacity=cap,current=curr)
