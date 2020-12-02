@@ -4,6 +4,8 @@ import buttonControl as buttonControl
 import ledControl as ledControl
 import LCDControl as LCDControl
 import RPi.GPIO as GPIO
+import channelControl as channelControl
+import datetime
 
 # Number of persons currently in the room 
 currentOccupants = 0
@@ -11,9 +13,13 @@ currentOccupants = 0
 # Max number of persons allowed in the room, default is 5
 maxCapacity = 5
 
+# Unique room id
+roomId = 1
+
 limitReached = False
 
-# update the roop capacity based on user Input
+# update the room capacity based on user Input
+# DEPRICATED
 def updateCapacity():
     global maxCapacity
     userInput = buttonControl.readButtonInputs()
@@ -27,12 +33,15 @@ def increaseCapacity():
     global maxCapacity
     maxCapacity = maxCapacity + 1
     updateState()
+    channelControl.uploadIncreasedCapacity(roomId, maxCapacity, datetime.datetime.now())
+
 
 # Decrease the room capacity by 1
 def decreaseCapacity():
     global maxCapacity
     maxCapacity = maxCapacity - 1
     updateState()
+    channelControl.uploadDecreasedCapacity(roomId, maxCapacity, datetime.datetime.now())
 
 # update the LCD screen
 def updateLCD():
@@ -57,18 +66,21 @@ def increaseOccupants():
     global currentOccupants
     currentOccupants = currentOccupants + 1
     updateState()
+    channelControl.uploadPersonEntering(roomId, currentOccupants, datetime.datetime.now())
 
 # decrease the number of persons in the room by 1
 def decreaseOccupants():
     global currentOccupants
     currentOccupants = currentOccupants - 1
     updateState()
+    channelControl.uploadPersonExiting(roomId, currentOccupants, datetime.datetime.now())
 
 # check to see if the room capacity has been reached
 def checkOccupants():
     global limitReached
     if(currentOccupants >= maxCapacity):
         limitReached = True
+        channelControl.uploadMaxCapReachedData(roomId, datetime.datetime.now())
     elif(currentOccupants < maxCapacity):
         limitReached = False
     return limitReached

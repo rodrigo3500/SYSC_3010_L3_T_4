@@ -1,9 +1,11 @@
 import unittest
-import ChannelControls
 import datetime
 import requests
 import json
 import time
+import sys
+sys.path.append("../endNodes")
+import channelControl as ChannelControls
 
 w_key = "NHGIKFM0VW4TGHDA"  # L3_T_4a2 write key
 r_key = "1IF97D5OLYHPX0ER"  # L3_T_4a2 read key
