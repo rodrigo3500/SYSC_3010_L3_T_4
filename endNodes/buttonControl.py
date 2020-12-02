@@ -3,19 +3,24 @@
 import RPi.GPIO as GPIO
 import capacityControl as capacityControl
 
+# DEPRICATED
 increaseCapacity = 1
 decreaseCapacity = 2
 noChange = 0
 
+#
+increaseButtonPin = 23
+decreaseButtonPin = 24
+
 # setting up button GPIO button inputs
 def setupButtons():
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(23,GPIO.IN)
-    GPIO.setup(24,GPIO.IN)
-    GPIO.add_event_detect(23, GPIO.RISING)
-    GPIO.add_event_callback(23, callIncreaseCap)
-    GPIO.add_event_detect(24, GPIO.RISING)
-    GPIO.add_event_callback(24, callDecreaseCap)
+    GPIO.setup(increaseButtonPin,GPIO.IN)
+    GPIO.setup(decreaseButtonPin,GPIO.IN)
+    GPIO.add_event_detect(increaseButtonPin, GPIO.RISING)
+    GPIO.add_event_callback(increaseButtonPin, callIncreaseCap)
+    GPIO.add_event_detect(decreaseButtonPin, GPIO.RISING)
+    GPIO.add_event_callback(decreaseButtonPin, callDecreaseCap)
 
 # Read if the up button is pressed or not
 # DEPRICATED
