@@ -7,16 +7,16 @@ from time import sleep
 # Constants
 ON = 1 # GPIO output 1 = on
 OFF = 0 # GPIO output 0 = off
-red = 22 # GPIO board pin for red LED
-green = 24 # GPIO board pin for green LED
+red = 25 # GPIO board pin for red LED
+green = 8 # GPIO board pin for green LED
 
 # Setting up GPIO output pins
 def setUpLeds():
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(22, GPIO.OUT)
-    GPIO.setup(24, GPIO.OUT)
-    GPIO.output(22, OFF)
-    GPIO.output(24, ON)
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(red, GPIO.OUT)
+    GPIO.setup(green, GPIO.OUT)
+    GPIO.output(red, OFF)
+    GPIO.output(green, ON)
 
 # Change state of the red led
 def redControl(state):

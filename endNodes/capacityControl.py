@@ -2,7 +2,7 @@
 # Controls the flow of the endnodes 
 import buttonControl as buttonControl
 import ledControl as ledControl
-import LCDControl as LCDControl
+import LCDbcmControl as LCDControl
 import RPi.GPIO as GPIO
 import channelControl as channelControl
 import datetime
