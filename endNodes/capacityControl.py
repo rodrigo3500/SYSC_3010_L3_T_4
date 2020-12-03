@@ -39,10 +39,11 @@ def increaseCapacity():
 
 # Decrease the room capacity by 1
 def decreaseCapacity():
-    global maxCapacity
-    maxCapacity = maxCapacity - 1
-    updateState()
-    channelControl.uploadDecreasedCapacity(roomId, maxCapacity, datetime.datetime.now())
+    if(not limitReached):
+        global maxCapacity
+        maxCapacity = maxCapacity - 1
+        updateState()
+        channelControl.uploadDecreasedCapacity(roomId, maxCapacity, datetime.datetime.now())
 
 # update the LCD screen
 def updateLCD():
@@ -64,10 +65,11 @@ def updateState():
 
 # increase the number of persons in the room by 1
 def increaseOccupants():
-    global currentOccupants
-    currentOccupants = currentOccupants + 1
-    updateState()
-    channelControl.uploadPersonEntering(roomId, currentOccupants, datetime.datetime.now())
+    if(not limitReached):
+        global currentOccupants
+        currentOccupants = currentOccupants + 1
+        updateState()
+        channelControl.uploadPersonEntering(roomId, currentOccupants, datetime.datetime.now())
 
 # decrease the number of persons in the room by 1
 def decreaseOccupants():
