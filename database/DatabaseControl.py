@@ -1,10 +1,15 @@
 from unittest import TestCase, main
 from sqlite3 import connect, Error
 from random import choice
+from requests import get
+from time import sleep
 
 db_file = "system.db" # path to database
 conn = None # to store database connection
 
+"""
+Returns a list of all Manager IDs from database
+"""
 def getManagerIDs():
     # Creating connection to database
     try:
@@ -26,12 +31,18 @@ def getManagerIDs():
 
     return ids
 
+"""
+Generates a unique random ID for every new Manager
+"""
 def generateManagerID():
     ids = getManagerIDs()
     newID = choice([i for i in range(0,1000) if i not in ids]) # Creating a new unique id here
 
     return newID
 
+"""
+Generates a unique random ID for every new Room
+"""
 def generateRoomID():
     # Creating connection to database
     try:
@@ -55,12 +66,22 @@ def generateRoomID():
 
     return newID
 
+"""
+Adds a new Manager to database
+"""
 def addManager(firstName, lastName, email, phoneNumber):
-    if (len(firstName) < 1 or len(firstName) > 20):
+    if (len(firstName) < 1 or len(firstName) > 20): # First name must be between 1 and 20 characters long (inclusive)
+        print("first")
         return False
-    if (len(lastName) < 1 or len(lastName) > 20):
+    if (len(lastName) < 1 or len(lastName) > 20): # Last name must be between 1 and 20 characters long (inclusive)
+        print("last")
         return False
-    if (len(email) < 6 or len(email) > 40 or '@' not in email):
+    if (len(email) < 6 or len(email) > 40 or '@' not in email): # Email must be between 6 and 40 characters long (inclusive)
+        print("email")
+        return False
+    if (not (len(str(phoneNumber)) == 10)): # Phone number must be 10 digits long
+        print(len(str(phoneNumber)))
+        print("phone")
         return False
 
     # Creating connection to database
@@ -71,7 +92,7 @@ def addManager(firstName, lastName, email, phoneNumber):
 
     csr = conn.cursor() # Creating cursor to access database
 
-    managerID = generateManagerID()
+    managerID = generateManagerID() # Creating new unique Manager ID for new Manager
 
     command = '''INSERT INTO Manager VALUES (?, ?, ?, ?, ?)'''
     csr.execute(command, (str(managerID), firstName, lastName, email, str(phoneNumber))) # Executing write here
@@ -80,12 +101,15 @@ def addManager(firstName, lastName, email, phoneNumber):
 
     return True
 
+"""
+Adds a new Room to database
+"""
 def addRoom(capacity, managerID):
     ids = getManagerIDs()
 
-    if (managerID not in ids):
+    if (managerID not in ids): # Room must always be associated with a Manager
         return False
-    if (capacity < 1):
+    if (capacity < 1): # Capacity of room must always be at least 1 to create a new room
         return False
 
     # Creating connection to database
@@ -96,8 +120,8 @@ def addRoom(capacity, managerID):
 
     csr = conn.cursor() # Creating cursor to access database
 
-    roomID = generateRoomID()
-    currentSize= 0
+    roomID = generateRoomID() # Creating new unique Room ID for new Room
+    currentSize = 0 # 0 people in a Room when first created
 
     command = '''INSERT INTO Room VALUES (?, ?, ?, ?)'''
     csr.execute(command, (str(roomID), str(currentSize), str(capacity), str(managerID))) # Executing write here
@@ -106,6 +130,9 @@ def addRoom(capacity, managerID):
 
     return True
 
+"""
+Removes Manager and all associated Rooms from database
+"""
 def removeManager(managerID):
     # Creating connection to database
     try:
@@ -115,13 +142,16 @@ def removeManager(managerID):
 
     csr = conn.cursor() # Creating cursor to access database
 
-    command1 = '''DELETE FROM Manager WHERE managerID = ?'''
+    command1 = '''DELETE FROM Manager WHERE managerID = ?''' # To remove Manager
     csr.execute(command1, (str(managerID),))
-    command2 = '''DELETE FROM Room WHERE managerID = ?'''
+    command2 = '''DELETE FROM Room WHERE managerID = ?''' # To remove Rooms associated with Manager
     csr.execute(command2, (str(managerID),))
     conn.commit()
     conn.close()
 
+"""
+Removes Room from database
+"""
 def removeRoom(roomID):
     # Creating connection to database
     try:
@@ -245,61 +275,28 @@ def getManagerDetails(managerID):
 Puts JSON entry from ThingSpeak into a dictionary
 """
 def sendRecentData():
-    #URL = 'https://api.thingspeak.com/channels/1224300/feeds.json?api_key='
-    #R_KEY = "1IF97D5OLYHPX0ER"  # L3_T_4a2 read key
-    #HEADER = '&results=5'
-    #recentEntries = requests.get(URL+R_KEY+HEADER).json()["feeds"]
-    recentEntries = {
-        "Entry_1": {
-             "Field 1": "enter",
-             "Field 2": 1000,
-             "Field 3": 5,
-             "Field 4": "time"
-        },
-        "Entry_2": {
-            "Field 1": "exit",
-            "Field 2": 1000,
-            "Field 3": 3,
-            "Field 4": "time"
-        },
-        "Entry_3": {
-            "Field 1": "max capacity increased",
-            "Field 2": 1000,
-            "Field 3": 6,
-            "Field 4": "time"
-        },
-        "Entry_4": {
-            "Field 1": "max capacity decreased",
-            "Field 2": 1000,
-            "Field 3": 4,
-            "Field 4": "time"
-        },
-        "Entry_5": {
-            "Field 1": "max capacity reached",
-            "Field 2": 1000,
-            "Field 3": "",
-            "Field 4": "time"
-        }
-    }
+    URL = 'https://api.thingspeak.com/channels/1224300/feeds.json?api_key='
+    R_KEY = "1IF97D5OLYHPX0ER"  # L3_T_4a2 read key
+    HEADER = '&results=30' # Getting last 30 entries from ThingSpeak
+    recentEntries = get(URL+R_KEY+HEADER).json()["feeds"] # All 30 entries stored in one list
 
-    for entry in recentEntries.items():
-        fields = entry[1]
-        if (len(fields) == 4):
-            action = fields["Field 1"]
-            roomID = fields["Field 2"]
-            newValue = fields["Field 3"]
+    # Iterates over every entry from list
+    for entry in recentEntries:
+        print(entry)
+        #print("==========================================================================")
 
-            if (action == "enter" or action == "exit"):
+        if (len(entry) == 6):
+            action = entry["field1"]
+            roomID = entry["field2"]
+            newValue = entry["field3"]
+
+            if (action == "enter" or action == "exit"): # If a person enters or exits Room, currentOccupancy in databse is updated
                 updateCurrentOccupancy(roomID, newValue)
-            elif (action == "max capacity increased" or action == "max capacity decreased"):
+            elif (action == "max capacity increased" or action == "max capacity decreased"): # If the capacity of a Room increases or decreases, capacity in database updated
                 updateMaxOccupancy(roomID, newValue)
 
-# Resetting values before running tests
-updateCurrentOccupancy(1000, 0) # Resetting current occupancy to 0
-updateMaxOccupancy(1000, 0) # Resetting max occupancy to 0
-
 if __name__ == '__main__':
-    #sendRecentData()
-    #generateManagerID()
-    #print(getManagerIDs())
-    #print(addRoom(capacity=0, managerID=2))
+    while (True): # Periodic timing loop
+        sendRecentData()
+        print("====================================================================================================================================================================================")
+        sleep(10) # Request last 30 entries every 10 seconds
