@@ -1,3 +1,5 @@
+# Author: Hari
+# Contains all methods required to upload messages to thingspeak
 import requests
 import json
 import urllib.parse as urlencode
@@ -28,11 +30,11 @@ def uploadPersonExiting(roomId, occupants, time):
 
 # uploading datapoint when increasing room capacity
 def uploadIncreasedCapacity(roomId, newLimit, time):
-    return uploadMaxCapChangeData("max_capacity_increased", roomId, newLimit, time)
+    return uploadMaxCapChangeData("max capacity increased", roomId, newLimit, time)
 
 # uploading datapoint with decreasing room capacity
 def uploadDecreasedCapacity(roomId, newLimit, time):
-    return uploadMaxCapChangeData("max_capacity_decreased", roomId, newLimit, time)
+    return uploadMaxCapChangeData("max capacity decreased", roomId, newLimit, time)
 
 def uploadPersonEnterExitRoomData(action, roomId, occupants, time):
     return writeData(action, roomId, occupants, time.__str__())
@@ -41,7 +43,7 @@ def uploadMaxCapChangeData(action, roomId, newLimit, time):
     return writeData(action, roomId, newLimit, time.__str__())
 
 def uploadMaxCapReachedData(roomId, time):
-    return writeData("max_capacity_reached", roomId, "", time.__str__())
+    return writeData("max capacity reached", roomId, "", time.__str__())
 
 # Writing data to thingspeak
 def writeData(field1, field2, field3, field4):
