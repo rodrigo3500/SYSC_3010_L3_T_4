@@ -6,6 +6,7 @@ import datetime
 from datetime import datetime
 import time
 from time import sleep
+import capacityControl as capacityControl
 
 def sonar():
 
@@ -68,7 +69,7 @@ def sonar():
 def PersonEnteredRoom():
 
     print('Person has entered the room')
-   
+    capacityControl.increaseOccupants()
     time = TimeDetected2
     #uploadPersonEntering(roomId, occupants, time)
     sleep(2)
@@ -80,8 +81,9 @@ def PersonEnteredRoom():
 def PersonExitedRoom():
 
     print('Person has exited the room')
-    
+    capacityControl.decreaseOccupants() 
     time = TimeDetected1
+
     #uploadPersonExiting(roomId, occupants, time):
     sleep(2)
     clear()
@@ -94,11 +96,13 @@ def clear():
     MotionDetected1 = False
     MotionDetected2 = False
     sonar()
-    
-if __name__=='__main__':
+
+def setupSonar():
     global sensor1
     sensor1 = DistanceSensor(echo=4, trigger=17)#outside the room
     global sensor2
     sensor2 = DistanceSensor(echo=27, trigger=22)#inside the room
     
+if __name__=="__main__":
+    setupSonar()
     sonar()

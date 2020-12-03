@@ -5,6 +5,7 @@ import ledControl as ledControl
 import LCDbcmControl as LCDControl
 import RPi.GPIO as GPIO
 import channelControl as channelControl
+import sonars as sonar
 import datetime
 
 # Number of persons currently in the room 
@@ -100,8 +101,8 @@ if __name__=="__main__":
     LCDControl.setupLCD()
     ledControl.setUpLeds()
     updateState()
+    sonar.setupSonar()
     try:
-        while(True):
-            x=1
+        sonar.sonar()
     except KeyboardInterrupt:
         GPIO.cleanup()
