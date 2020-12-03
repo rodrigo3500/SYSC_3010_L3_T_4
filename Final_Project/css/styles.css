@@ -1,0 +1,120 @@
+body {
+    background-color: #d0d6fd;
+    padding-left: 2em;
+}
+
+main {
+    background-color: aliceblue;
+    padding: 0.001em;
+}
+
+h1, h2, h3 {
+    font-family: "Trebuchet MS", "Lucida Grande", Tahoma, sans-serif;
+}
+
+body {
+    font-family: Georgia, Cambria, "Times New Roman", serif;
+}
+
+/*header */
+
+header, footer {
+    color: white;
+    background-color: #212179;
+}
+
+header>h1 {
+    padding-top: 1em;
+    padding-left: 1em;
+    font-size: x-large;
+}
+
+header>p {
+    padding-left: 1.5em;
+    padding-bottom: 2em;
+    font-style: italic;
+}
+
+nav ul {
+    background-color: #434fae;
+    padding-left: 1em;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    font-size: large;
+}
+
+nav ul li {
+    list-style: none;
+    display: inline;
+    margin: 0.2em;
+}
+
+/*end of header elements*/
+
+/*section elements*/
+
+section {
+    background-color: aliceblue;
+    margin: 2em;
+    border: solid 1px #999999;
+}
+
+section h3 {
+    background-color: #7b84c5;
+    text-transform: uppercase;
+    color: white;
+    padding: 1em;
+    font-size: x-large;
+}
+
+figure img {
+    width: 100%;
+    height: auto;
+}
+
+/* End of Section elements*/
+
+/*Footer */
+
+/*End of Footer*/
+
+a:link {
+    font-weight: bold;
+    color: #47B3D7;
+}
+
+a:visited {
+    color: #2480d4;
+}
+
+a:hover {
+    background-color: #FFFFCC;
+}
+
+b.nodelink:hover {
+    background-color: #FFFFCC;
+}
+
+.nodelink {
+    background-color: #434fae;
+    padding: 1em;
+    font-size: xx-large;
+    padding: 1em 4em;
+}
+
+.manager {
+    background-color: #212179;
+    width: 50% ;
+    color: antiquewhite;
+    padding: 1em;
+    font-size: x-large;
+}
+
+.data{
+    font-size: x-large;
+    background-color: #434fae;
+    width: 50% ;
+    color: antiquewhite;
+    padding: 1em;
+    margin: 2em 0 0 0;
+}
