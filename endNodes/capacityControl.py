@@ -5,15 +5,16 @@ import ledControl as ledControl
 import LCDbcmControl as LCDControl
 import RPi.GPIO as GPIO
 import channelControl as channelControl
+import sonars as sonar
 import datetime
 
-# Number of persons currently in the room 
+# Number of persons currently in the room, system assumes room is empty as the start
 currentOccupants = 0
 
 # Max number of persons allowed in the room, default is 5
 maxCapacity = 5
 
-# Unique room id
+# Unique room id, different for each end node
 roomId = 1
 
 limitReached = False
@@ -36,12 +37,13 @@ def increaseCapacity():
     channelControl.uploadIncreasedCapacity(roomId, maxCapacity, datetime.datetime.now())
 
 
-# Decrease the room capacity by 1
+# Decrease the room capacity by 1. Cannot decrease the room capcaity if the room has reached its limit.
 def decreaseCapacity():
-    global maxCapacity
-    maxCapacity = maxCapacity - 1
-    updateState()
-    channelControl.uploadDecreasedCapacity(roomId, maxCapacity, datetime.datetime.now())
+    if(not limitReached):
+        global maxCapacity
+        maxCapacity = maxCapacity - 1
+        updateState()
+        channelControl.uploadDecreasedCapacity(roomId, maxCapacity, datetime.datetime.now())
 
 # update the LCD screen
 def updateLCD():
@@ -56,6 +58,7 @@ def updateLed():
     elif(limitReached):
         ledControl.aboveLimit()
 
+# Update the state of limit reached and update LCD and led components
 def updateState():
     checkOccupants()
     updateLCD()
@@ -63,10 +66,11 @@ def updateState():
 
 # increase the number of persons in the room by 1
 def increaseOccupants():
-    global currentOccupants
-    currentOccupants = currentOccupants + 1
-    updateState()
-    channelControl.uploadPersonEntering(roomId, currentOccupants, datetime.datetime.now())
+    if(not limitReached):
+        global currentOccupants
+        currentOccupants = currentOccupants + 1
+        updateState()
+        channelControl.uploadPersonEntering(roomId, currentOccupants, datetime.datetime.now())
 
 # decrease the number of persons in the room by 1
 def decreaseOccupants():
@@ -75,7 +79,7 @@ def decreaseOccupants():
     updateState()
     channelControl.uploadPersonExiting(roomId, currentOccupants, datetime.datetime.now())
 
-# check to see if the room capacity has been reached
+# check to see if the room capacity has been reached. IF reached, send message to thingspeak
 def checkOccupants():
     global limitReached
     if(currentOccupants >= maxCapacity):
@@ -95,13 +99,16 @@ def updateLeds():
     elif(limitReached):
         ledControl.aboveLimit()
 
+# Set up all harware compoonents and start sonar sensing loop
 if __name__=="__main__":
+    global maxCapacity
+    global currentOccupants
     buttonControl.setupButtons()
-    LCDControl.setupLCD()
+    LCDControl.setupLCD(maxCapacity, currentOccupants)
     ledControl.setUpLeds()
     updateState()
+    sonar.setupSonar()
     try:
-        while(True):
-            x=1
+        sonar.sonar()
     except KeyboardInterrupt:
         GPIO.cleanup()

@@ -8,16 +8,19 @@ increaseCapacity = 1
 decreaseCapacity = 2
 noChange = 0
 
-#
+# GPIO ports used for button input
 increaseButtonPin = 23
 decreaseButtonPin = 24
 
 # setting up button GPIO button inputs
 def setupButtons():
-    GPIO.setmode(GPIO.BCM)
+    GPIO.setmode(GPIO.BCM) # restricted to BCM because of chosen Sonar Sensor library
+    # Defining button GPIO ports and inputs
     GPIO.setup(increaseButtonPin,GPIO.IN)
     GPIO.setup(decreaseButtonPin,GPIO.IN)
+    # Setting up event listeners. Since a pull down resistor is used in the design, a rising edge dictates a button press
     GPIO.add_event_detect(increaseButtonPin, GPIO.RISING)
+    # Interrupt based programming
     GPIO.add_event_callback(increaseButtonPin, callIncreaseCap)
     GPIO.add_event_detect(decreaseButtonPin, GPIO.RISING)
     GPIO.add_event_callback(decreaseButtonPin, callDecreaseCap)
@@ -49,11 +52,11 @@ def readButtonInputs():
         return decreaseCapacity
     return noChange
 
-# callback function to update values when incremented
+# callback function to update values when up button pressed
 def callIncreaseCap(callBack):
     capacityControl.increaseCapacity()
 
-# callback function to update values when decremented
+# callback function to update values when down button pressed
 def callDecreaseCap(callBack):
     capacityControl.decreaseCapacity()
 

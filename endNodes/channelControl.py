@@ -55,3 +55,7 @@ def writeData(field1, field2, field3, field4):
         return r.status_code
     except Exception as e:
         print(e)
+
+# If this file is run seperately, all entries in thingspeak is cleared.
+if __name__ == "__main__":
+    clearChannel()
