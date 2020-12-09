@@ -1,5 +1,14 @@
 # SYSC_3010_L3_T_4
-SYSC 3010 Team Project
+Room Capacity Limiter Ultra
+
+## Summary
+In an effort to encourage social distancing during this COVID-19 pandemic, this system was developed to encourage social distancing.
+
+## Features
+* Detects individuals entering and leaving a room (one at a time)
+* Logically prevents more individuals from entering a room once capacity is reached
+* Displays room metrics on website
+* Text and email notifications when capacity is reached
 
 ## Prerequisites
 * Python 3.5
