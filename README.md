@@ -40,8 +40,8 @@ Central Data Node
 * Sensors Test: ```python3 /Demo2/test_sonar.py```
 
 ### End-to-End Tests
-* Test LEDs: ```python3 /Demo2/test_1-5.py```
-* Test LEDs: ```python3 /Demo2/test_6-8.py```
+* Test ThingSpeak POST request: ```python3 /Demo2/test_1-5.py```
+* Test ThingSpeak POST response: ```python3 /Demo2/test_6-8.py```
 
 ### Database Test
 * Run ```python3 /Demo2/test_db.py```
