@@ -3,6 +3,34 @@ from sqlite3 import connect, Error
 from random import choice
 from requests import get
 from time import sleep
+import smtplib
+
+
+"""
+Setup for the email functionality 
+A gmail account is required
+You also have to turn on "App Access' in your Gmail security settings
+Otherwise, it'll fail authentication. (SMTPAuthenticationError)
+Sends the email with the contents of the parameter as the content
+"""
+
+
+def send_email(roomID):
+
+    mail = smtplib.SMTP('smpt.gmail.com', 587)
+
+    mail.ehlo()
+
+    mail.starttls()
+
+    # Sender email and password
+    mail.login('email', 'password')
+
+    # Parameters:  sender , recipient, content
+    mail.sendmail('sender', 'recipient', 'Max Capacity Reached for node: ' +  roomID )
+
+    mail.close()
+
 
 db_file = "system.db" # path to database
 conn = None # to store database connection
@@ -272,6 +300,14 @@ def getManagerDetails(managerID):
     return details
 
 """
+Checks if any emails need to be sent
+"""
+def checkForEmail():
+
+
+
+
+"""
 Puts JSON entry from ThingSpeak into a dictionary
 """
 def sendRecentData():
@@ -285,14 +321,16 @@ def sendRecentData():
         print(entry)
         #print("==========================================================================")
 
-        if (len(entry) == 6):
+        if len(entry) == 6:
             action = entry["field1"]
             roomID = entry["field2"]
             newValue = entry["field3"]
 
-            if (action == "enter" or action == "exit"): # If a person enters or exits Room, currentOccupancy in databse is updated
+            if action == "max capacity reached ":#if the max capacity of a room is reached, send email notification
+                send_email(roomID)
+            if action == "enter" or action == "exit": # If a person enters or exits Room, currentOccupancy in databse is updated
                 updateCurrentOccupancy(roomID, newValue)
-            elif (action == "max capacity increased" or action == "max capacity decreased"): # If the capacity of a Room increases or decreases, capacity in database updated
+            elif action == "max capacity increased" or action == "max capacity decreased": # If the capacity of a Room increases or decreases, capacity in database updated
                 updateMaxOccupancy(roomID, newValue)
 
 if __name__ == '__main__':
