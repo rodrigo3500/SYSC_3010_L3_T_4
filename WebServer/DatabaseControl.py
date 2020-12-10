@@ -299,12 +299,6 @@ def getManagerDetails(managerID):
 
     return details
 
-"""
-Checks if any emails need to be sent
-"""
-def checkForEmail():
-
-
 
 
 """
