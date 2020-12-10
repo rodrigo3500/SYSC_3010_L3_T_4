@@ -20,7 +20,7 @@ Central Data Node
 * Install Apache 2, PHP 7.3, and SQLite 3 on Pi
 * Obtain RPi’s IP address by running ```$hostname -I``` 
 * Ensure Apache 2 Web Server is running on the Pi by visiting IPaddress/index.html in any browser connected to the same network, where IPaddress is the one assigned to the Rpi
-
+* Configure sender email in the DatabaseControl.py file inside the /Webserver folder with any gmail that will be used to send update emails
 ## Usage
 Data Collection Node
 1. Run ```python3 /endNodes/capacityControl.py``` on all secondary nodes
