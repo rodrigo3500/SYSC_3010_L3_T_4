@@ -7,6 +7,7 @@ import RPi.GPIO as GPIO
 import channelControl as channelControl
 import sonars as sonar
 import datetime
+import time
 
 # Number of persons currently in the room 
 currentOccupants = 0
@@ -39,8 +40,8 @@ def increaseCapacity():
 
 # Decrease the room capacity by 1
 def decreaseCapacity():
-    if(not limitReached):
-        global maxCapacity
+    global maxCapacity
+    if((not limitReached) and (maxCapacity > 0)):
         maxCapacity = maxCapacity - 1
         updateState()
         channelControl.uploadDecreasedCapacity(roomId, maxCapacity, datetime.datetime.now())
@@ -74,9 +75,10 @@ def increaseOccupants():
 # decrease the number of persons in the room by 1
 def decreaseOccupants():
     global currentOccupants
-    currentOccupants = currentOccupants - 1
-    updateState()
-    channelControl.uploadPersonExiting(roomId, currentOccupants, datetime.datetime.now())
+    if(currentOccupants > 0):
+        currentOccupants = currentOccupants - 1
+        updateState()
+        channelControl.uploadPersonExiting(roomId, currentOccupants, datetime.datetime.now())
 
 # check to see if the room capacity has been reached
 def checkOccupants():
@@ -84,6 +86,7 @@ def checkOccupants():
     if(currentOccupants >= maxCapacity):
         limitReached = True
         channelControl.uploadMaxCapReachedData(roomId, datetime.datetime.now())
+        time.sleep(3)
     elif(currentOccupants < maxCapacity):
         limitReached = False
     return limitReached

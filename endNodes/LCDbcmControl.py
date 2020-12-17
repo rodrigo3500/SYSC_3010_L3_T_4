@@ -33,8 +33,10 @@ def setupLCD():
     lcd = charLcd.Character_LCD_Mono(lcd_rs,lcd_en,lcd_d4,lcd_d5,lcd_d6,lcd_d7,lcdColumns, lcdRows)
     lcd.clear()
     lcd.message=messageFormat.format(capacity=5,current=0)
+    print(messageFormat.format(capacity=5,current=0))
 
 # Update the LCD to display updated room metrics
 def writeToLCD(cap, curr):
     global lcd
     lcd.message=messageFormat.format(capacity=cap,current=curr)
+    print(messageFormat.format(capacity=cap,current=curr))
